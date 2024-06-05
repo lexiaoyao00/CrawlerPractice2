@@ -2,6 +2,7 @@ import os
 import requests
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+# from curl_cffi import requests
 
 class Downloader:
     def __init__(self, threads=10):

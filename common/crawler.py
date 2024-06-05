@@ -1,14 +1,16 @@
-import requests
+# import requests
 from random import choice
 from bs4 import BeautifulSoup
 from typing import List,Dict
 from tenacity import retry, stop_after_attempt, wait_exponential
+from curl_cffi import requests
 
 
 USER_AGENTS = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0',
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
     ]
 
 PROXIES = None
@@ -30,10 +32,11 @@ class Crawler:
         self.proxies = proxies or []
         self.session = requests.Session()
 
-    def get_headers(self):
+    def get_headers(self,referer):
         headers = {
             'User-Agent': choice(self.user_agents) if self.user_agents else 'Mozilla/5.0',
-            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7,en-US;q=0.6',
+            'Referer' : referer,
         }
         return headers
 
@@ -54,7 +57,7 @@ class Crawler:
     #         raise e
     @retry(stop=stop_after_attempt(max_retries), wait=wait_exponential(multiplier=retry_backoff))
     def send_request(self, url, method='GET', data=None, headers=None, proxies=None):
-        headers = headers or self.get_headers()
+        headers = headers or self.get_headers(url)
         proxies = proxies or self.get_proxy()
         try:
             response = self.session.request(method, url, headers=headers, data=data, proxies=proxies, timeout=10)
