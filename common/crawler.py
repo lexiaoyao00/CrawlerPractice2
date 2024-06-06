@@ -56,11 +56,11 @@ class Crawler:
     #         print(f'Error: {e}')
     #         raise e
     @retry(stop=stop_after_attempt(max_retries), wait=wait_exponential(multiplier=retry_backoff))
-    def send_request(self, url, method='GET', data=None, headers=None, proxies=None):
+    def send_request(self, url, method='GET', params=None, data=None, headers=None, proxies=None):
         headers = headers or self.get_headers(url)
         proxies = proxies or self.get_proxy()
         try:
-            response = self.session.request(method, url, headers=headers, data=data, proxies=proxies, timeout=10)
+            response = self.session.request(method, url, headers=headers, params=params, data=data, proxies=proxies, timeout=10)
             response.raise_for_status()
             return response.text
         except requests.exceptions.RequestException as e:
