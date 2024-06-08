@@ -1,5 +1,10 @@
 from abc import ABCMeta,abstractmethod
+import multiprocessing.synchronize
 from .crawler import Crawler,USER_AGENTS,PROXIES
+
+import multiprocessing
+import threading
+
 
 class MySpider(object):
     __metaclass__ = ABCMeta
@@ -15,7 +20,7 @@ class MySpider(object):
         self.items = {}
     
     @abstractmethod
-    def start_crawling(self,terminate_event):
+    def start_crawling(self,terminate_event:multiprocessing.synchronize.Event |threading.Event):
         """爬虫启动函数
 
         Args:
