@@ -18,10 +18,17 @@ PROXIES = None
 class Rule:
     """selector(必选)：CSS选择器,用于选择要提取的元素。
        attribute(可选): 如果提供了该键,则提取元素的指定属性值,而不是文本内容。
+       content(可选): content代表提取的内容：
+            'text': 表示提取元素的文本内容或者属性。
+            'html': 表示提取元素的完整HTML内容。
     """
-    def __init__(self, selector:str, attribute:str|None=None):
+    def __init__(self, selector:str, attribute:str|None=None,content:str='text'):
+        if content not in ["text", "html"]:
+            raise ValueError("format must be 'text' or 'html'")
+        
         self.selector = selector
-        self.attribute = attribute
+        self.attribute = attribute if content=='text' else None
+        self.content = content
 
 class Crawler:
     max_retries = 3 #最大重试次数 
@@ -56,11 +63,11 @@ class Crawler:
     #         print(f'Error: {e}')
     #         raise e
     @retry(stop=stop_after_attempt(max_retries), wait=wait_exponential(multiplier=retry_backoff))
-    def send_request(self, url, method='GET', params=None, data=None, headers=None, proxies=None):
+    def send_request(self, url, method='GET', params=None, data=None,cookies=None, headers=None, proxies=None):
         headers = headers or self.get_headers(url)
         proxies = proxies or self.get_proxy()
         try:
-            response = self.session.request(method, url, headers=headers, params=params, data=data, proxies=proxies, timeout=10)
+            response = self.session.request(method, url, headers=headers, params=params, data=data,cookies=cookies, proxies=proxies, timeout=10)
             response.raise_for_status()
             return response.text
         except requests.exceptions.RequestException as e:
@@ -76,15 +83,9 @@ class Crawler:
 
         Args:
             soup (BeautifulSoup): 页面的BeautifulSoup解析，可以使用parse函数返回值
-            rules (Dict[str,Rule]): 提取规则，举例：
-                    rules = {
-                    'title': {'selector': 'h1'},
-                    'paragraphs': {'selector': 'p'},
-                    'links': {'selector': 'a', 'attribute': 'href'},
-                    'images': {'selector': 'img', 'attribute': 'src'},
-                    }
-            rules的key为欲提取的内容；
-            value是个Rule类型。
+            rules (Dict[str,Rule]): 提取规则:
+                rules的key为欲提取的内容；
+                value是个Rule类型。
 
 
         Returns:
@@ -94,10 +95,17 @@ class Crawler:
         for key, rule in rules.items():
             elements = soup.select(rule.selector)
             if elements:
-                if rule.attribute:
-                    data[key] = [element[rule.attribute] for element in elements]
+                if rule.content == 'html':# 直接获取节点内容
+                    data[key] = [str(element) for element in elements]
+                    return data
+
+                elif rule.content == 'text':# 获取节点文本或属性
+                    if rule.attribute:# 是否获取属性
+                        data[key] = [element[rule.attribute] for element in elements]
+                    else:
+                        data[key] = [element.get_text(strip=True) for element in elements]
                 else:
-                    data[key] = [element.get_text(strip=True) for element in elements]
+                    raise ValueError("format must be 'text' or 'html'")
             else:
                 data[key] = []
         return data

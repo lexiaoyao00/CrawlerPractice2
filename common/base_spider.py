@@ -12,6 +12,7 @@ class MySpider(object):
     
     def __init__(self) -> None:
         self.crawler = Crawler(USER_AGENTS,PROXIES)
+        self.items = {}
     
     @abstractmethod
     def start_crawling(self,terminate_event):

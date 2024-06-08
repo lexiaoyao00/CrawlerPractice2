@@ -1,8 +1,11 @@
 from common import *
 
 class Danbooru(MySpider):
-    _referer ='https://danbooru.donmai.us/'
-    _popular = 'https://danbooru.donmai.us/explore/posts/popular'
+    _ORIGIN ='https://danbooru.donmai.us/'
+    _POPULAR = 'https://danbooru.donmai.us/explore/posts/popular'
+    _RULES = {
+            'pre_imgs' : Rule('img.post-preview-image','src')
+        }
 
     def __init__(self):
         super().__init__()
@@ -10,16 +13,10 @@ class Danbooru(MySpider):
     def start_crawling(self, terminate_event):
         print("Danbooru start_crawling")
 
-        html = self.crawler.send_request(Danbooru._popular)
-        # print(html)
-        soup = self.crawler.parse(html)
+        html = self.crawler.send_request(Danbooru._POPULAR)
 
-        rules = {
-            'imgs' : Rule('img.post-preview-image','src')
-        }
-
-        data = self.crawler.extract_data(soup, rules)
+        data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._RULES)
         print(data)
 
-        downloader = Downloader(threads=10)
-        downloader.download_files(data['imgs'], "downloads")
+        # downloader = Downloader(threads=10)
+        # downloader.download_files(data['pre_imgs'], "downloads")

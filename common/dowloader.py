@@ -47,18 +47,3 @@ class Downloader:
             else:
                 for future in futures:
                     future.result()
-
-# 使用示例
-# if __name__ == "__main__":
-#     downloader = Downloader(threads=10)
-
-#     # 下载单个文件
-#     downloader.download_file("https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png", "baidu.png")
-
-#     # 批量下载文件
-#     urls = [
-#         "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-#         "https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/topnav/newxueshuicon-a5314d5c83.png",
-#         # 添加更多URL
-#     ]
-#     downloader.download_files(urls, "downloads")
