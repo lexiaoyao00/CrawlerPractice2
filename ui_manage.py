@@ -1,28 +1,37 @@
-
 import sys
 from PyQt6.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog
 from UI import *
 from spider2ui import danbooru_ui
+from instance_manage import instanceui_danbooru_post
+
+class TextEditLogger:
+    def __init__(self, text_edit):
+        self.text_edit = text_edit
+
+    def write(self, message:str):
+        self.text_edit.append(message.rstrip())
+
+    def flush(self):
+        pass
 
 class MyUIManage(QMainWindow):
     def __init__(self):
         super().__init__()
-        
-        self.danbooru_post = Ui_DanbooruPost()
 
         self.init_ui()
 
 
     def init_ui(self):
-        self.danbooru_post.setupUi(self)
-        self.testFn()
+        instanceui_danbooru_post.setupUi(self)
+        self.binding()
+
+        # 输出重定向到log文本框
+        sys.stdout = TextEditLogger(instanceui_danbooru_post.TE_log)
+        sys.stderr = TextEditLogger(instanceui_danbooru_post.TE_log)
 
 
-    def testFn(self):
-        # self.main_window.PB_getInfo.clicked.connect(lambda : QMessageBox.information(QDialog(), "信息提示", "你点击了我"))
-
-        self.danbooru_post.PB_getInfo.clicked.connect(lambda :danbooru_ui.print_log(self.danbooru_post,danbooru_ui.get_post_url(self.danbooru_post)))
-        
+    def binding(self):
+        instanceui_danbooru_post.PB_getInfo.clicked.connect(lambda : danbooru_ui.slot_btn_getinfo())
 
 
 def show_ui():

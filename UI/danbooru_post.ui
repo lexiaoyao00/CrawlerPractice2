@@ -31,7 +31,11 @@
           <widget class="QLineEdit" name="LE_url"/>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="LE_artist"/>
+          <widget class="QLineEdit" name="LE_artist">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_url">
@@ -51,6 +55,9 @@
           <widget class="QLineEdit" name="LE_cop">
            <property name="text">
             <string/>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -146,4 +153,8 @@
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <slot>btnGetClicked()</slot>
+  <slot>btnDownloadCliked()</slot>
+ </slots>
 </ui>

@@ -1,5 +1,5 @@
 from .spider_baidu import BaiDu
-from .spider_danbooru import Danbooru
+from .spider_danbooru import Danbooru,PostInfo
 
 ##### 动态导入1 #############
 
