@@ -3,12 +3,31 @@ from common import *
 
 class PostInfo():
     def __init__(self):
+        self.name = ''
         self.original_img_url:str = ''
         self.parent_posts_url:str = ''
         self.artists = []
         self.copyright = []
         self.tags = []
         self.img_information = []
+
+    def image_naming(self):
+        if self.img_information ==[]:
+            return ''
+        else:
+            name_obj = re.search(r'\d+',self.img_information[0])
+            if name_obj:
+                name = name_obj.group()
+            else:
+                name = self.original_img_url.rsplit('/',1)[1].rsplit('.',1)[0]
+
+            ext_obj = re.search(r'.(jpg|jpeg|png|gif|bmp)',self.img_information[3])
+            if ext_obj:
+                ext = ext_obj.group()
+            else:
+                ext = '.jpg'
+                
+            return name+ext
 
 
 class Danbooru(MySpider):
@@ -54,6 +73,9 @@ class Danbooru(MySpider):
         Returns:
             dict: 返回字典，包含 original_img,parent_posts_url,post_artists,post_copyright,post_tags,img_information
         """
+        if post_url is None or post_url == '':
+            return None
+
         html = self.crawler.send_request(post_url)
 
         data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._POST_RULES)
@@ -61,7 +83,6 @@ class Danbooru(MySpider):
 
         original_img = data['original_img'][0]
         post_info.original_img_url =  original_img
-        print('original_img get')
 
         try:
             parent_posts_url = Danbooru._ORIGIN +  data['parent_posts_url'][0]
@@ -69,7 +90,6 @@ class Danbooru(MySpider):
             print('this post has no parent posts')
             parent_posts_url = None
         post_info.parent_posts_url =  parent_posts_url
-        print('parent_posts_url get')
 
 
         post_info.artists = data['artist_tag_list']
@@ -78,12 +98,11 @@ class Danbooru(MySpider):
         #TODO:过滤黑名单内容
         post_tags = self.merge_lists(data['character_tag_list'],data['general_tag_list'],data['meta_tag_list'],blacklist_tag_list=None)
         post_info.tags = post_tags
-        print('tags get')
 
         post_info.img_information = data['img_information']
-        print('img_information get')
+        post_info.name = post_info.image_naming()
 
-
+        print('解析完毕:' + post_url)
         return post_info
 
 

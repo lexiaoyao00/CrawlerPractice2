@@ -70,7 +70,8 @@ class Crawler:
             response = self.session.request(method, url, headers=headers, params=params, data=data,cookies=cookies, proxies=proxies, timeout=10)
             response.raise_for_status()
             return response.text
-        except requests.exceptions.RequestException as e:
+        # except requests.exceptions.RequestException as e:
+        except Exception as e:
             print(f'Error: {e}')
             raise e
 

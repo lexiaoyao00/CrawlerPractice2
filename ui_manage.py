@@ -31,7 +31,9 @@ class MyUIManage(QMainWindow):
 
 
     def binding(self):
-        instanceui_danbooru_post.PB_getInfo.clicked.connect(lambda : danbooru_ui.slot_btn_getinfo())
+        instanceui_danbooru_post.PB_getInfo.clicked.connect(lambda : danbooru_ui.slot_btn_getinfo_clicked())
+        instanceui_danbooru_post.PB_download.clicked.connect(lambda : danbooru_ui.slot_btn_download_clicked())
+
 
 
 def show_ui():
