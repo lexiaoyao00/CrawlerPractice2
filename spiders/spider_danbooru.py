@@ -50,7 +50,12 @@ class Danbooru(MySpider):
     }
     def __init__(self):
         super().__init__()
+
+        self.config = ConfigParser('spiders_config.yaml','yaml').config_data['danbooru']
     
+    def get_blacklist(self):
+        black_list = self.config['blacklist']
+        return black_list
 
     def merge_lists(self, *args: list, blacklist_tag_list:list|None=None ):
         result = []
@@ -81,22 +86,31 @@ class Danbooru(MySpider):
         data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._POST_RULES)
         post_info = PostInfo()
 
-        original_img = data['original_img'][0]
-        post_info.original_img_url =  original_img
+        try:
+            original_img = data['original_img'][0]
+        except :
+            # print('当前帖子已经显示原画')
+            original_img = self.crawler.extract_data(self.crawler.parse(html), {'original_img':Rule('picture source','srcset')})['original_img'][0]
+        finally:
+            post_info.original_img_url =  original_img
 
         try:
             parent_posts_url = Danbooru._ORIGIN +  data['parent_posts_url'][0]
         except :
-            print('this post has no parent posts')
+            # print('this post has no parent posts')
             parent_posts_url = None
-        post_info.parent_posts_url =  parent_posts_url
+        finally:
+            post_info.parent_posts_url =  parent_posts_url
 
 
         post_info.artists = data['artist_tag_list']
         post_info.copyright = data['copyright_tag_list']
         
         #TODO:过滤黑名单内容
-        post_tags = self.merge_lists(data['character_tag_list'],data['general_tag_list'],data['meta_tag_list'],blacklist_tag_list=None)
+        post_tags = self.merge_lists(data['character_tag_list'],
+                                     data['general_tag_list'],
+                                     data['meta_tag_list'],
+                                     blacklist_tag_list=self.get_blacklist())
         post_info.tags = post_tags
 
         post_info.img_information = data['img_information']

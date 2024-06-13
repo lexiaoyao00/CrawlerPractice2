@@ -25,7 +25,7 @@ def slot_btn_getinfo_clicked():
         else:
                 print('获取信息失败')
     except Exception as e:
-        print('error:', e)
+        print('slot_btn_getinfo_clicked error:', e)
 
 def slot_btn_download_clicked():
         global post_info
@@ -35,12 +35,13 @@ def slot_btn_download_clicked():
                 # print('test: ' + img)
                 img_name = post_info.name
                 directory = 'downloads'
-                os.makedirs(directory, exist_ok=True)
+                if not os.path.exists(directory):
+                        os.makedirs(directory, exist_ok=True)
 
+                print('正在启用下载，请稍后。。。。。')
                 try:
-
                         Downloader().download_file(img,os.path.join(directory,img_name) ,show_progress=False)
                 except Exception as e:
-                        print('error:', e)
+                        print('slot_btn_download_clicked error:', e)
                 else:
                         print(img_name + '下载完毕')

@@ -1,0 +1,32 @@
+danbooru:
+  blacklist:
+    - "skeb commission"
+    - commission
+    - "commentary request"
+    - "mosaic censoring"
+    - censored
+    - "chinese commentary"
+    - "pointless censoring"
+    - "translation request"
+    - signature
+    - "english commentary"
+    - "mixed-language commentary"
+    - "twitter username"
+    - "Artist name"
+    - "Character name"
+    - "Circle name"
+    - "Commissioner name"
+    - "Company name"
+    - "Completion time"
+    - "Copyright name"
+    - "Dated"
+    - "Group name"
+    - "Logo"
+    - "Content rating"
+    - "Twitter username"
+    - "Signature"
+    - "Character signature"
+    - "Song name"
+    - "Watermark"
+    - "Web address"
+    - "Weapon name"

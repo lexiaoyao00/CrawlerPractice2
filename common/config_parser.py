@@ -4,7 +4,14 @@ import xml.etree.ElementTree as ET
 import yaml
 
 class ConfigParser:
-    def __init__(self, config_source, data_type, from_file=True):
+    def __init__(self, config_source:str, data_type:str, from_file=True):
+        """解析配置文件
+
+        Args:
+            config_source (str): 文件路径 或 字符串（from_file为false时）
+            data_type (str): 解析的类型，支持 ini , json , xml , yaml
+            from_file (bool, optional): 是否从文件解析，false时代表从字符串. Defaults to True.
+        """
         self.config_source = config_source
         self.data_type = data_type.lower()
         self.from_file = from_file
