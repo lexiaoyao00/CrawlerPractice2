@@ -1,16 +1,16 @@
 import os
+
 from UI import Ui_DanbooruPost
 from spiders import Danbooru,PostInfo
-from instance_manage import instance_danbooru
-from instance_manage import instanceui_danbooru_post
+from instance_manage import instance_danbooru,instanceui_danbooru_post
 from common import Downloader
+from logger import my_logger
 
 
 ###  Post UI  ###
 post_info:PostInfo = None
 
 def slot_btn_getinfo_clicked():
-    #TODO:一访问这个帖子就出错：https://danbooru.donmai.us/posts/7399943?q=ordfav%3Alexiaoyao
     global post_info
     url = instanceui_danbooru_post.LE_url.text()
     #爬取post信息
@@ -23,9 +23,11 @@ def slot_btn_getinfo_clicked():
                 instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
                 instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.img_information))
         else:
-                print('获取信息失败')
+                # print('获取信息失败')
+                my_logger.info('获取信息失败')
     except Exception as e:
-        print('slot_btn_getinfo_clicked error:', e)
+        # print('slot_btn_getinfo_clicked error:', e)
+        my_logger.error(e)
 
 def slot_btn_download_clicked():
         global post_info
@@ -38,10 +40,14 @@ def slot_btn_download_clicked():
                 if not os.path.exists(directory):
                         os.makedirs(directory, exist_ok=True)
 
-                print('正在启用下载，请稍后。。。。。')
+                # print('正在启用下载，请稍后。。。。。')
+                my_logger.info('正在启用下载，请稍后。。。。。')
                 try:
                         Downloader().download_file(img,os.path.join(directory,img_name) ,show_progress=False)
                 except Exception as e:
-                        print('slot_btn_download_clicked error:', e)
+                        # print('slot_btn_
+                        # download_clicked error:', e)
+                        my_logger.error(e)
                 else:
-                        print(img_name + '下载完毕')
+                        # print(img_name + '下载完毕')
+                        my_logger.info(img_name + '下载完毕')

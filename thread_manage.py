@@ -1,6 +1,7 @@
 import threading
 import time
 
+from logger import my_logger
 class ThreadManager(object):
     _instance = None
 
@@ -28,7 +29,8 @@ class ThreadManager(object):
             thread = self.threads[thread_index]
             self.terminate_events[thread].set()
         else:
-            print(f"Invalid thread index: {thread_index}")
+            # print(f"Invalid thread index: {thread_index}")
+            my_logger.debug(f"Invalid thread index: {thread_index}")
 
     def terminate_threads(self):
         # self.terminate_event.set()

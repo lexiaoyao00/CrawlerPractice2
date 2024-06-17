@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog
 from UI import *
 from spider2ui import danbooru_ui
 from instance_manage import instanceui_danbooru_post
+from logger import my_logger
 
 class TextEditLogger:
     def __init__(self, text_edit):
@@ -25,9 +26,7 @@ class MyUIManage(QMainWindow):
         instanceui_danbooru_post.setupUi(self)
         self.binding()
 
-        # 输出重定向到log文本框
-        sys.stdout = TextEditLogger(instanceui_danbooru_post.TE_log)
-        sys.stderr = TextEditLogger(instanceui_danbooru_post.TE_log)
+        my_logger.enable_qt_output(instanceui_danbooru_post.TE_log)
 
 
     def binding(self):

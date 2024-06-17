@@ -5,6 +5,8 @@ from typing import List,Dict
 from tenacity import retry, stop_after_attempt, wait_exponential
 from curl_cffi import requests
 
+from logger import my_logger
+
 
 USER_AGENTS = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -72,7 +74,8 @@ class Crawler:
             return response.text
         # except requests.exceptions.RequestException as e:
         except Exception as e:
-            print(f'Error: {e}')
+            # print(f'Error: {e}')
+            my_logger.error(f'Error: {e}')
             raise e
 
     def parse(self, html, parser='html.parser'):

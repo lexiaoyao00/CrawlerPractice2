@@ -1,5 +1,5 @@
 from common import *
-
+from logger import my_logger
 
 class PostInfo():
     def __init__(self):
@@ -106,7 +106,6 @@ class Danbooru(MySpider):
         post_info.artists = data['artist_tag_list']
         post_info.copyright = data['copyright_tag_list']
         
-        #TODO:过滤黑名单内容
         post_tags = self.merge_lists(data['character_tag_list'],
                                      data['general_tag_list'],
                                      data['meta_tag_list'],
@@ -116,18 +115,19 @@ class Danbooru(MySpider):
         post_info.img_information = data['img_information']
         post_info.name = post_info.image_naming()
 
-        print('解析完毕:' + post_url)
+        # print('解析完毕:' + post_url)
+        my_logger.info('解析完毕:' + post_url)
         return post_info
 
 
 
 
     def start_crawling(self, terminate_event):
-        print("Danbooru start_crawling")
+        # print("Danbooru start_crawling")
 
         test_post_url = 'https://danbooru.donmai.us/posts/7269895'
         data = self.post_parse(test_post_url)
-        print(data)
+        # print(data)
 
         # downloader = Downloader(threads=10)
         # downloader.download_files(data['pre_imgs'], "downloads")

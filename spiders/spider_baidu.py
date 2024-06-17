@@ -7,7 +7,7 @@ class BaiDu(MySpider):
         super().__init__()
 
     def start_crawling(self, terminate_event):
-        print("BaiDu start_crawling")
+        # print("BaiDu start_crawling")
 
         html = self.crawler.send_request(BaiDu._referer)
         # print(html)
@@ -19,7 +19,7 @@ class BaiDu(MySpider):
         }
 
         data = self.crawler.extract_data(soup, rules)
-        print(data)
+        # print(data)
 
         # downloader = Downloader(threads=10)
         # downloader.download_files(data['imgs'], "downloads")

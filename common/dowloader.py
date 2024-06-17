@@ -4,6 +4,7 @@ from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 # from curl_cffi import requests
 
+from logger import my_logger
 class Downloader:
     def __init__(self, threads=10):
         self.threads = threads
@@ -26,7 +27,8 @@ class Downloader:
             progress.close()
             # print(f"下载完成: {filename}")
         except Exception as e:
-            print(f"下载失败: {filename}, 错误: {e}")
+            # print(f"下载失败: {filename}, 错误: {e}")
+            my_logger.error(f"下载失败: {filename}, 错误: {e}")
 
     def download_files(self, urls, directory, show_progress=True):
         """批量下载文件"""
