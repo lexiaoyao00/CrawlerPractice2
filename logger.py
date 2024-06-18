@@ -19,7 +19,7 @@ class Logger:
         if enable and not self.console_handler:
             console_handler = logging.StreamHandler()
             console_handler.setLevel(self.logger.level)
-            console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            console_formatter = logging.Formatter('%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
             console_handler.setFormatter(console_formatter)
             self.logger.addHandler(console_handler)
             self.console_handler = console_handler
@@ -32,7 +32,7 @@ class Logger:
         if enable and not self.file_handler:
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(self.logger.level)
-            file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            file_formatter = logging.Formatter('%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
             file_handler.setFormatter(file_formatter)
             self.logger.addHandler(file_handler)
             self.file_handler = file_handler
@@ -45,7 +45,7 @@ class Logger:
         if enable and not self.qt_handler:
             qt_handler = QtHandler(text_edit)
             qt_handler.setLevel(self.logger.level)
-            qt_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            qt_formatter = logging.Formatter('%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
             qt_handler.setFormatter(qt_formatter)
             self.logger.addHandler(qt_handler)
             self.qt_handler = qt_handler
