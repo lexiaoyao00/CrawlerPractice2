@@ -126,9 +126,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="PB_filter">
+          <widget class="QPushButton" name="PB_close">
            <property name="text">
-            <string>filter</string>
+            <string>close</string>
            </property>
           </widget>
          </item>
@@ -152,7 +152,24 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>PB_close</sender>
+   <signal>clicked()</signal>
+   <receiver>DanbooruPost</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>669</x>
+     <y>667</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>701</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>btnGetClicked()</slot>
   <slot>btnDownloadCliked()</slot>

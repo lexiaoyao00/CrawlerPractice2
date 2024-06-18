@@ -77,9 +77,9 @@ class Ui_DanbooruPost(object):
         self.PB_download = QtWidgets.QPushButton(parent=self.widget_post)
         self.PB_download.setObjectName("PB_download")
         self.horizontalLayout.addWidget(self.PB_download)
-        self.PB_filter = QtWidgets.QPushButton(parent=self.widget_post)
-        self.PB_filter.setObjectName("PB_filter")
-        self.horizontalLayout.addWidget(self.PB_filter)
+        self.PB_close = QtWidgets.QPushButton(parent=self.widget_post)
+        self.PB_close.setObjectName("PB_close")
+        self.horizontalLayout.addWidget(self.PB_close)
         self.gridLayout_4.addLayout(self.horizontalLayout, 2, 0, 1, 1)
         self.gridLayout.addWidget(self.widget_post, 0, 0, 1, 1)
         DanbooruPost.setCentralWidget(self.centralwidget)
@@ -92,6 +92,7 @@ class Ui_DanbooruPost(object):
         DanbooruPost.setStatusBar(self.statusbar)
 
         self.retranslateUi(DanbooruPost)
+        self.PB_close.clicked.connect(DanbooruPost.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(DanbooruPost)
 
     def retranslateUi(self, DanbooruPost):
@@ -105,4 +106,4 @@ class Ui_DanbooruPost(object):
         self.label_log.setText(_translate("DanbooruPost", "log"))
         self.PB_getInfo.setText(_translate("DanbooruPost", "get"))
         self.PB_download.setText(_translate("DanbooruPost", "download"))
-        self.PB_filter.setText(_translate("DanbooruPost", "filter"))
+        self.PB_close.setText(_translate("DanbooruPost", "close"))
