@@ -12,8 +12,8 @@ class PostInfo():
         self.post_information = []
 
     def post_naming(self):
-        if self.post_information ==[]:
-            return ''
+        if self.post_information ==[] or self.original_post_url == '':
+            raise '该函数要在提取到帖子信息后使用'
         else:
             name_obj = re.search(r'\d+',self.post_information[0])
             if name_obj:
@@ -21,12 +21,16 @@ class PostInfo():
             else:
                 name = self.original_post_url.rsplit('/',1)[1].rsplit('.',1)[0]
 
-            ext_obj = re.search(r'.(jpg|jpeg|png|gif|bmp)',self.post_information[3])
+            # ext_obj = re.search(r' .(jpg|jpeg|png|gif|bmp|mp4|zip|)',self.post_information[3])
+            # ext_obj = re.search(r' \..{3}',self.post_information[3])
+            ext_obj = re.search(r'\.\w{3,4}$',self.original_post_url)
             if ext_obj:
                 ext = ext_obj.group()
             else:
                 ext = '.jpg'
-                
+            
+            my_logger.debug(name + ext)
+
             return name+ext
 
 
@@ -39,7 +43,8 @@ class Danbooru(MySpider):
         }
 
     _POST_RULES = {
-        'original_post': Rule('li#post-option-view-original a.image-view-original-link','href'),
+        # 'original_post': Rule('li#post-option-view-original a.image-view-original-link','href'),# 最常见的帖子URL：缩小显示图片
+        'original_download': Rule('li#post-option-download a','href'),
         'parent_posts_url' : Rule('div.notice a[rel="nofollow"]','href'),
         'artist_tag_list': Rule('ul.artist-tag-list a.search-tag'),
         'copyright_tag_list': Rule('ul.copyright-tag-list a.search-tag'),
@@ -76,7 +81,7 @@ class Danbooru(MySpider):
             post_url (str): post url
 
         Returns:
-            dict: 返回字典，包含 original_img,parent_posts_url,post_artists,post_copyright,post_tags,post_information
+            dict: 返回字典，包含 original_download,parent_posts_url,post_artists,post_copyright,post_tags,post_information
         """
         if post_url is None or post_url == '':
             return None
@@ -86,13 +91,14 @@ class Danbooru(MySpider):
         data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._POST_RULES)
         post_info = PostInfo()
 
-        try:
-            original_img = data['original_img'][0]
-        except :
-            # print('当前帖子已经显示原画')
-            original_img = self.crawler.extract_data(self.crawler.parse(html), {'original_img':Rule('picture source','srcset')})['original_img'][0]
-        finally:
-            post_info.original_post_url =  original_img
+
+        if  data['original_download']:
+            original_url = data['original_download'][0].split(r'?')[0]
+            my_logger.debug('下载网址：' + original_url)
+        else:
+            my_logger.error('下载链接未获取到，请检查'+post_url)
+            original_url=None
+        post_info.original_post_url = original_url
 
         try:
             parent_posts_url = Danbooru._ORIGIN +  data['parent_posts_url'][0]

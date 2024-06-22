@@ -3,7 +3,7 @@ import logging,traceback
 from PyQt6.QtWidgets import QTextEdit
 
 class Logger:
-    def __init__(self,name:str = None, level=logging.DEBUG):
+    def __init__(self,name:str = None, level=logging.INFO):
         logger_name = name or __name__
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(level)
@@ -57,9 +57,9 @@ class Logger:
         if enable and not self.qt_handler:
             qt_handler = QtHandler(text_edit)
             qt_handler.setLevel(self.logger.level)
-            # qt_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-            # qt_handler.setFormatter(qt_formatter)
-            qt_handler.setFormatter(self.formatter)
+            qt_formatter = logging.Formatter('%(asctime)s  - %(message)s')
+            qt_handler.setFormatter(qt_formatter)
+            # qt_handler.setFormatter(self.formatter)
 
             self.logger.addHandler(qt_handler)
             self.qt_handler = qt_handler
