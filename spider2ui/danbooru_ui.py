@@ -52,7 +52,7 @@ def slot_danbooru_gallery_btn_lastPg_clicked():
     global gallery_info
 
     if gallery_info.tail_page == "":
-        gallery_info.tail_page = instance_danbooru.gallery_parse(GalleryInfo._HOT)
+        gallery_info = instance_danbooru.gallery_parse(GalleryInfo._HOT)
 
     instanceui_danbooru_gallery.LE_page.setText(gallery_info.tail_page)
 

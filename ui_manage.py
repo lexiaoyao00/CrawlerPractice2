@@ -93,7 +93,6 @@ class MyUIManage(QMainWindow):
         danbooru_ui.slot_danbooru_gallery_update_url()
 
     def _slot_danbooru_gallery_btn_clicked(self,button:str):
-        button = button.lower()
         if button == 'obtain':
             danbooru_ui.slot_danbooru_gallery_btn_obtain_clicked()
         elif button == 'firstPg':

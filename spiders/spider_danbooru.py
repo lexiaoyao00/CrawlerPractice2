@@ -150,7 +150,9 @@ class Danbooru(MySpider):
         
         post_hrefs = [ Danbooru._ORIGIN+href for href in data['post_hrefs']]
         gallery_info.post_hrefs =  post_hrefs
-        gallery_info.tail_page = data['tail_page']
+
+        if data['tail_page']:
+            gallery_info.tail_page = data['tail_page'][0]
 
         return gallery_info
 
