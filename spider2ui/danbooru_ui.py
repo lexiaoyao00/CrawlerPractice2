@@ -19,103 +19,105 @@ def slot_danbooru_post_btn_getinfo_clicked():
     try:
         post_info = instance_danbooru.post_parse(url)
         if post_info is not None:
-                instanceui_danbooru_post.LE_artist.setText(','.join(post_info.artists))
-                instanceui_danbooru_post.LE_cop.setText(','.join(post_info.copyright))
-                instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
-                instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.post_information))
+            instanceui_danbooru_post.LE_artist.setText(','.join(post_info.artists))
+            instanceui_danbooru_post.LE_cop.setText(','.join(post_info.copyright))
+            instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
+            instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.post_information))
         else:
-                my_logger.info('获取信息失败')
+            my_logger.info('获取信息失败')
     except Exception as e:
         my_logger.error(e)
 
 def slot_danbooru_post_btn_download_clicked():
-        global post_info
+    global post_info
 
-        if post_info is not None:
-                media = post_info.original_post_url
-                media_name = post_info.name
-                directory = 'downloads'
-                if not os.path.exists(directory):
-                        os.makedirs(directory, exist_ok=True)
+    if post_info is not None:
+        media = post_info.original_post_url
+        media_name = post_info.name
+        directory = 'downloads'
+        if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
 
-                my_logger.info('正在启用下载，请稍后。。。。。')
-                try:
-                        Downloader().download_file(media,os.path.join(directory,media_name) ,show_progress=False)
-                except Exception as e:
-                        my_logger.error(e)
-                else:
-                        my_logger.info(media_name + '下载完毕')
+        my_logger.info('正在启用下载，请稍后。。。。。')
+        try:
+                Downloader().download_file(media,os.path.join(directory,media_name) ,show_progress=False)
+        except Exception as e:
+                my_logger.error(e)
+        else:
+                my_logger.info(media_name + '下载完毕')
 
 
 ###  Gallery UI  ###
 def slot_danbooru_gallery_btn_lastPg_clicked():
-       # TODO: 尾页
-       pass
+    global gallery_info
+
+    if gallery_info.tail_page == "":
+        gallery_info.tail_page = instance_danbooru.gallery_parse(GalleryInfo._HOT)
+
+    instanceui_danbooru_gallery.LE_page.setText(gallery_info.tail_page)
 
 def slot_danbooru_gallery_btn_firstPg_clicked():
-       # TODO: 首页
-       pass
+        instanceui_danbooru_gallery.LE_page.setText('1')
 
 def slot_danbooru_gallery_btn_prevPg_clicked():
-       # TODO: 上一页
-       pass
+        # TODO: 上一页
+        pass
 
 def slot_danbooru_gallery_btn_nextPg_clicked():
-       # TODO: 下一页
-       pass
+        # TODO: 下一页
+        pass
 
 def slot_danbooru_gallery_btn_obtain_clicked():
-       # TODO: 获取
-        global gallery_info
+    global gallery_info
 
-        try:
-                url = instanceui_danbooru_gallery.LE_url.text()
-                gallery_info = instance_danbooru.gallery_parse(url)
-                # my_logger.debug(gallery_info.pre_imgs)
-                instanceui_danbooru_gallery.show_images(gallery_info.pre_imgs,gallery_info.post_hrefs)
-        except Exception as e:
-                my_logger.error(e)
+    try:
+        url = instanceui_danbooru_gallery.LE_url.text()
+        gallery_info = instance_danbooru.gallery_parse(url)
+        # my_logger.debug(gallery_info.pre_imgs)
+        instanceui_danbooru_gallery.show_images(gallery_info.pre_imgs,gallery_info.post_hrefs)
+    except Exception as e:
+        my_logger.error(e)
 
 def slot_danbooru_gallery_radioBtn_hot_clicked():
-        instanceui_danbooru_gallery.PB_lastPg.setEnabled(True)
+    instanceui_danbooru_gallery.PB_lastPg.setEnabled(True)
 
-        # hot 画廊无日期和规模
-        instanceui_danbooru_gallery.dateEdit.setEnabled(False)
-        instanceui_danbooru_gallery.comboBox_scale.setEnabled(False)
+    # hot 画廊无日期和规模
+    instanceui_danbooru_gallery.dateEdit.setEnabled(False)
+    instanceui_danbooru_gallery.comboBox_scale.setEnabled(False)
 
-        slot_danbooru_gallery_update_url()
+    slot_danbooru_gallery_update_url()
 
 def slot_danbooru_gallery_radioBtn_popular_clicked():
-        instanceui_danbooru_gallery.dateEdit.setEnabled(True)
-        instanceui_danbooru_gallery.comboBox_scale.setEnabled(True)
+    instanceui_danbooru_gallery.dateEdit.setEnabled(True)
+    instanceui_danbooru_gallery.comboBox_scale.setEnabled(True)
 
-        instanceui_danbooru_gallery.PB_lastPg.setEnabled(False) # popular 画廊无尾页
+    instanceui_danbooru_gallery.PB_lastPg.setEnabled(False) # popular 画廊无尾页
 
-        slot_danbooru_gallery_update_url()
+    slot_danbooru_gallery_update_url()
 
 def slot_danbooru_gallery_update_url():
-        global gallery_info
+    global gallery_info
 
-        # 获取三个控件的值
-        str_date = instanceui_danbooru_gallery.dateEdit.date().toString("yyyy-MM-dd")
-        str_scale = instanceui_danbooru_gallery.comboBox_scale.currentText()
-        str_page = instanceui_danbooru_gallery.LE_page.text()
+    # 获取三个控件的值
+    str_date = instanceui_danbooru_gallery.dateEdit.date().toString("yyyy-MM-dd")
+    str_scale = instanceui_danbooru_gallery.comboBox_scale.currentText()
+    str_page = instanceui_danbooru_gallery.LE_page.text()
 
-        parameter = {
-                'date': str_date,
-                'scale': str_scale,
-                'page': str_page
-        }
+    parameter = {
+            'date': str_date,
+            'scale': str_scale,
+            'page': str_page
+    }
 
-        if instanceui_danbooru_gallery.RB_hot.isChecked():
-                new_url = GalleryInfo._HOT + '&page=' + str_page
-                instanceui_danbooru_gallery.LE_url.setText(new_url)
-        elif instanceui_danbooru_gallery.RB_popular.isChecked():
-                lt = []
-                for k,v in parameter.items():
-                        lt.append(k+'='+str(v))
-                query_str = "&".join(lt)
-                new_url = GalleryInfo._POPULAR + '?' + query_str
-                instanceui_danbooru_gallery.LE_url.setText(new_url)
-        else:
-                my_logger.error("画廊选项出错")
+    if instanceui_danbooru_gallery.RB_hot.isChecked():
+        new_url = GalleryInfo._HOT + '&page=' + str_page
+        instanceui_danbooru_gallery.LE_url.setText(new_url)
+    elif instanceui_danbooru_gallery.RB_popular.isChecked():
+        lt = []
+        for k,v in parameter.items():
+                lt.append(k+'='+str(v))
+        query_str = "&".join(lt)
+        new_url = GalleryInfo._POPULAR + '?' + query_str
+        instanceui_danbooru_gallery.LE_url.setText(new_url)
+    else:
+        my_logger.error("画廊选项出错")

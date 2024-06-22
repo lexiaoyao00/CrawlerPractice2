@@ -21,19 +21,6 @@ class MyUIManage(QMainWindow):
 
         self.binding()
 
-        # instanceui_danbooru_gallery.setupUi(self)
-
-        # 显示第一批图片
-        # image_urls_batch1 = ["https://cdn.donmai.us/360x360/b7/37/b737b9bfe5009d0a5be0b87f3ab91841.jpg", 
-        #                     "https://cdn.donmai.us/360x360/15/0e/150e22b6195e6e940a7bfb471c238f53.jpg",
-        #                     "https://cdn.donmai.us/360x360/fc/36/fc36d31c9522a44ab0de7815f21a64e4.jpg",
-        #                     "https://cdn.donmai.us/360x360/5b/e7/5be77cae21d97630a9606d68f56e859d.jpg",
-        #                     "https://cdn.donmai.us/360x360/2a/df/2adf6e5d64dd0ad291f506bc94218bf6.jpg",
-        #                     "https://cdn.donmai.us/360x360/99/09/99090acd4d6930c79fa8c56b61a079d3.jpg",
-        #                     "https://cdn.donmai.us/360x360/df/5f/df5f4e41ceb7636539786ec47c863f6c.jpg"
-        #                     ]
-        # instanceui_danbooru_gallery.show_images(image_urls_batch1)
-
     def binding(self):
         ### main window
         instanceui_main_window.PB_danbooru_post.clicked.connect(self.show_danbooru_post)
