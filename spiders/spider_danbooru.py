@@ -1,6 +1,16 @@
 from common import *
 from logger import my_logger
 
+
+class GalleryInfo():
+    _POPULAR = 'https://danbooru.donmai.us/explore/posts/popular'
+    _HOT = 'https://danbooru.donmai.us/posts?tags=order:rank'
+
+    def __init__(self):
+        self.pre_imgs = []
+        self.post_hrefs = []
+        self.tail_page:str = ""
+
 class PostInfo():
     def __init__(self):
         self.name = ''
@@ -36,10 +46,11 @@ class PostInfo():
 
 class Danbooru(MySpider):
     _ORIGIN ='https://danbooru.donmai.us'
-    _POPULAR = 'https://danbooru.donmai.us/explore/posts/popular'
+
     _GALLERY_RULES = {
             'pre_imgs' : Rule('img.post-preview-image','src'),
             'post_hrefs' : Rule('a.post-preview-link','href'),
+            'tail_page' : Rule('span.paginator-ellipsis + a.paginator-page')
         }
 
     _POST_RULES = {
@@ -125,7 +136,23 @@ class Danbooru(MySpider):
         my_logger.info('解析完毕:' + post_url)
         return post_info
 
+    def gallery_parse(self,gallery_url:str):
+        if gallery_url is None or gallery_url == '':
+            return None
+        
+        html = self.crawler.send_request(gallery_url)
 
+        data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._GALLERY_RULES)
+        gallery_info = GalleryInfo()
+
+
+        gallery_info.pre_imgs = data['pre_imgs']
+        
+        post_hrefs = [ Danbooru._ORIGIN+href for href in data['post_hrefs']]
+        gallery_info.post_hrefs =  post_hrefs
+        gallery_info.tail_page = data['tail_page']
+
+        return gallery_info
 
 
     def start_crawling(self, terminate_event):

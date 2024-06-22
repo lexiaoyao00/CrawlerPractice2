@@ -27,17 +27,23 @@ class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
 
         self.image_labels = []  # 用于存储所有 QLabel 对象
 
-    def show_images(self, image_urls):
+    def show_images(self, prev_image_urls,post_urls):
+        if prev_image_urls is None or len(prev_image_urls) == 0:
+            return
+
         self.clear_images()  # 清空当前显示的图片
 
-        for i, image_url in enumerate(image_urls):
+        for i, image_url in enumerate(prev_image_urls):
             label = QLabel(self.image_widget)
 
             label.setStyleSheet("border: 1px solid black;") #显示黑边框
             label.setFixedSize(150,150) #设置大小
 
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            label.mousePressEvent = lambda event, url=image_url: self.on_image_clicked(event, url)
+
+            if post_urls is not None and len(post_urls) == len(prev_image_urls):
+                label.mousePressEvent = lambda event, url=post_urls[i]: self.on_image_clicked(event, url)
+            
             self.load_image(label, image_url)
             row = i // 5  # 每行显示 5 个图像
             col = i % 5
@@ -61,6 +67,6 @@ class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
         response = requests.get(image_url)
         return response.content
 
-    def on_image_clicked(self, event, image_url):
+    def on_image_clicked(self, event, url):
         # TODO：跳转帖子解析界面
-        print(f"Image clicked: {image_url}")
+        print(f"Image clicked: {url}")

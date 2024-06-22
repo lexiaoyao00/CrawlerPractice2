@@ -1,53 +1,121 @@
 import os
 
 from UI import Ui_DanbooruPost
-from spiders import Danbooru,PostInfo
-from instance_manage import instance_danbooru,instanceui_danbooru_post
+from spiders import Danbooru,PostInfo,GalleryInfo
+from instance_manage import instance_danbooru,instanceui_danbooru_post,instanceui_danbooru_gallery
+from instance_manage import instanceInfo_danbooru_post_info,instanceInfo_danbooru_gallery_info
 from common import Downloader
 from logger import my_logger
 
 
-###  Post UI  ###
-post_info:PostInfo = None
+post_info:PostInfo = instanceInfo_danbooru_post_info
+gallery_info:GalleryInfo = instanceInfo_danbooru_gallery_info
 
-def slot_btn_getinfo_clicked():
+###  Post UI  ###
+def slot_danbooru_post_btn_getinfo_clicked():
     global post_info
     url = instanceui_danbooru_post.LE_url.text()
     #爬取post信息
     try:
         post_info = instance_danbooru.post_parse(url)
-        # original_img,parent_posts_url,post_artists,post_copyright,post_tags,post_information
         if post_info is not None:
                 instanceui_danbooru_post.LE_artist.setText(','.join(post_info.artists))
                 instanceui_danbooru_post.LE_cop.setText(','.join(post_info.copyright))
                 instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
                 instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.post_information))
         else:
-                # print('获取信息失败')
                 my_logger.info('获取信息失败')
     except Exception as e:
-        # print('slot_btn_getinfo_clicked error:', e)
         my_logger.error(e)
 
-def slot_btn_download_clicked():
+def slot_danbooru_post_btn_download_clicked():
         global post_info
 
         if post_info is not None:
                 media = post_info.original_post_url
-                # print('test: ' + img)
                 media_name = post_info.name
                 directory = 'downloads'
                 if not os.path.exists(directory):
                         os.makedirs(directory, exist_ok=True)
 
-                # print('正在启用下载，请稍后。。。。。')
                 my_logger.info('正在启用下载，请稍后。。。。。')
                 try:
                         Downloader().download_file(media,os.path.join(directory,media_name) ,show_progress=False)
                 except Exception as e:
-                        # print('slot_btn_
-                        # download_clicked error:', e)
                         my_logger.error(e)
                 else:
-                        # print(img_name + '下载完毕')
                         my_logger.info(media_name + '下载完毕')
+
+
+###  Gallery UI  ###
+def slot_danbooru_gallery_btn_lastPg_clicked():
+       # TODO: 尾页
+       pass
+
+def slot_danbooru_gallery_btn_firstPg_clicked():
+       # TODO: 首页
+       pass
+
+def slot_danbooru_gallery_btn_prevPg_clicked():
+       # TODO: 上一页
+       pass
+
+def slot_danbooru_gallery_btn_nextPg_clicked():
+       # TODO: 下一页
+       pass
+
+def slot_danbooru_gallery_btn_obtain_clicked():
+       # TODO: 获取
+        global gallery_info
+
+        try:
+                url = instanceui_danbooru_gallery.LE_url.text()
+                gallery_info = instance_danbooru.gallery_parse(url)
+                # my_logger.debug(gallery_info.pre_imgs)
+                instanceui_danbooru_gallery.show_images(gallery_info.pre_imgs,gallery_info.post_hrefs)
+        except Exception as e:
+                my_logger.error(e)
+
+def slot_danbooru_gallery_radioBtn_hot_clicked():
+        instanceui_danbooru_gallery.PB_lastPg.setEnabled(True)
+
+        # hot 画廊无日期和规模
+        instanceui_danbooru_gallery.dateEdit.setEnabled(False)
+        instanceui_danbooru_gallery.comboBox_scale.setEnabled(False)
+
+        slot_danbooru_gallery_update_url()
+
+def slot_danbooru_gallery_radioBtn_popular_clicked():
+        instanceui_danbooru_gallery.dateEdit.setEnabled(True)
+        instanceui_danbooru_gallery.comboBox_scale.setEnabled(True)
+
+        instanceui_danbooru_gallery.PB_lastPg.setEnabled(False) # popular 画廊无尾页
+
+        slot_danbooru_gallery_update_url()
+
+def slot_danbooru_gallery_update_url():
+        global gallery_info
+
+        # 获取三个控件的值
+        str_date = instanceui_danbooru_gallery.dateEdit.date().toString("yyyy-MM-dd")
+        str_scale = instanceui_danbooru_gallery.comboBox_scale.currentText()
+        str_page = instanceui_danbooru_gallery.LE_page.text()
+
+        parameter = {
+                'date': str_date,
+                'scale': str_scale,
+                'page': str_page
+        }
+
+        if instanceui_danbooru_gallery.RB_hot.isChecked():
+                new_url = GalleryInfo._HOT + '&page=' + str_page
+                instanceui_danbooru_gallery.LE_url.setText(new_url)
+        elif instanceui_danbooru_gallery.RB_popular.isChecked():
+                lt = []
+                for k,v in parameter.items():
+                        lt.append(k+'='+str(v))
+                query_str = "&".join(lt)
+                new_url = GalleryInfo._POPULAR + '?' + query_str
+                instanceui_danbooru_gallery.LE_url.setText(new_url)
+        else:
+                my_logger.error("画廊选项出错")
