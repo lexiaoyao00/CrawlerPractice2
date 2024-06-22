@@ -39,7 +39,7 @@ class Ui_DanbooruGalleryFixed(object):
         self.horizontalLayout_2.addWidget(self.label_date)
         self.dateEdit = QtWidgets.QDateEdit(parent=self.centralwidget)
         self.dateEdit.setMaximumDateTime(QtCore.QDateTime(QtCore.QDate(9999, 12, 29), QtCore.QTime(23, 59, 59)))
-        self.dateEdit.setCurrentSection(QtWidgets.QDateTimeEdit.Section.YearSection)
+        self.dateEdit.setCurrentSection(QtWidgets.QDateTimeEdit.Section.DaySection)
         self.dateEdit.setObjectName("dateEdit")
         self.horizontalLayout_2.addWidget(self.dateEdit)
         self.horizontalLayout_8.addLayout(self.horizontalLayout_2)

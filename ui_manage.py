@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog
+from PyQt6.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog,QDateEdit
 from PyQt6.QtCore import Qt,QDate
 
 from spider2ui import danbooru_ui
@@ -32,7 +32,10 @@ class MyUIManage(QMainWindow):
         instanceui_danbooru_post.PB_close.clicked.connect(self.danbooru_post_win.close)
         
         ### TODO:danbooru gallery
+        #修改
         instanceui_danbooru_gallery.dateEdit.dateChanged.connect(self._slot_danbooru_gallery_update_url)
+        instanceui_danbooru_gallery.dateEdit.dateChanged.connect(self._slot_danbooru_gallery_change_date_section)
+
         instanceui_danbooru_gallery.comboBox_scale.currentIndexChanged.connect(self._slot_danbooru_gallery_update_url)
         instanceui_danbooru_gallery.LE_page.textChanged.connect(self._slot_danbooru_gallery_update_url)
 
@@ -113,6 +116,18 @@ class MyUIManage(QMainWindow):
             my_logger.debug('按钮绑定错误')
             danbooru_ui.slot_danbooru_gallery_btn_firstPg_clicked()
 
+    def _slot_danbooru_gallery_change_date_section(self):
+        current_select = instanceui_danbooru_gallery.comboBox_scale.currentText()
+
+        if current_select == 'day':
+            instanceui_danbooru_gallery.dateEdit.setCurrentSection(QDateEdit.Section.DaySection)
+        elif current_select == 'week':
+            instanceui_danbooru_gallery.dateEdit.setCurrentSection(QDateEdit.Section.DaySection)
+        elif current_select == 'month':
+            instanceui_danbooru_gallery.dateEdit.setCurrentSection(QDateEdit.Section.MonthSection)
+
+        else:
+            pass
 
 
 def show_ui():

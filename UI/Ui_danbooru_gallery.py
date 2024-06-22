@@ -50,6 +50,9 @@ class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
             self.image_layout.addWidget(label, row, col)
             self.image_labels.append(label)
 
+            # 立即显示
+            QApplication.processEvents()
+
     def clear_images(self):
         for label in self.image_labels:
             self.image_layout.removeWidget(label)
