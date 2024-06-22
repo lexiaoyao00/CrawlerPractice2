@@ -4,24 +4,24 @@ from logger import my_logger
 class PostInfo():
     def __init__(self):
         self.name = ''
-        self.original_img_url:str = ''
+        self.original_post_url:str = ''
         self.parent_posts_url:str = ''
         self.artists = []
         self.copyright = []
         self.tags = []
-        self.img_information = []
+        self.post_information = []
 
-    def image_naming(self):
-        if self.img_information ==[]:
+    def post_naming(self):
+        if self.post_information ==[]:
             return ''
         else:
-            name_obj = re.search(r'\d+',self.img_information[0])
+            name_obj = re.search(r'\d+',self.post_information[0])
             if name_obj:
                 name = name_obj.group()
             else:
-                name = self.original_img_url.rsplit('/',1)[1].rsplit('.',1)[0]
+                name = self.original_post_url.rsplit('/',1)[1].rsplit('.',1)[0]
 
-            ext_obj = re.search(r'.(jpg|jpeg|png|gif|bmp)',self.img_information[3])
+            ext_obj = re.search(r'.(jpg|jpeg|png|gif|bmp)',self.post_information[3])
             if ext_obj:
                 ext = ext_obj.group()
             else:
@@ -39,14 +39,14 @@ class Danbooru(MySpider):
         }
 
     _POST_RULES = {
-        'original_img': Rule('li#post-option-view-original a.image-view-original-link','href'),
+        'original_post': Rule('li#post-option-view-original a.image-view-original-link','href'),
         'parent_posts_url' : Rule('div.notice a[rel="nofollow"]','href'),
         'artist_tag_list': Rule('ul.artist-tag-list a.search-tag'),
         'copyright_tag_list': Rule('ul.copyright-tag-list a.search-tag'),
         'character_tag_list': Rule('ul.character-tag-list a.search-tag'),
         'general_tag_list': Rule('ul.general-tag-list a.search-tag'),
         'meta_tag_list': Rule('ul.meta-tag-list a.search-tag'),
-        'img_information': Rule('section#post-information ul li'),
+        'post_information': Rule('section#post-information ul li'),
     }
     def __init__(self):
         super().__init__()
@@ -76,7 +76,7 @@ class Danbooru(MySpider):
             post_url (str): post url
 
         Returns:
-            dict: 返回字典，包含 original_img,parent_posts_url,post_artists,post_copyright,post_tags,img_information
+            dict: 返回字典，包含 original_img,parent_posts_url,post_artists,post_copyright,post_tags,post_information
         """
         if post_url is None or post_url == '':
             return None
@@ -92,7 +92,7 @@ class Danbooru(MySpider):
             # print('当前帖子已经显示原画')
             original_img = self.crawler.extract_data(self.crawler.parse(html), {'original_img':Rule('picture source','srcset')})['original_img'][0]
         finally:
-            post_info.original_img_url =  original_img
+            post_info.original_post_url =  original_img
 
         try:
             parent_posts_url = Danbooru._ORIGIN +  data['parent_posts_url'][0]
@@ -112,8 +112,8 @@ class Danbooru(MySpider):
                                      blacklist_tag_list=self.get_blacklist())
         post_info.tags = post_tags
 
-        post_info.img_information = data['img_information']
-        post_info.name = post_info.image_naming()
+        post_info.post_information = data['post_information']
+        post_info.name = post_info.post_naming()
 
         # print('解析完毕:' + post_url)
         my_logger.info('解析完毕:' + post_url)

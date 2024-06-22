@@ -16,12 +16,12 @@ def slot_btn_getinfo_clicked():
     #爬取post信息
     try:
         post_info = instance_danbooru.post_parse(url)
-        # original_img,parent_posts_url,post_artists,post_copyright,post_tags,img_information
+        # original_img,parent_posts_url,post_artists,post_copyright,post_tags,post_information
         if post_info is not None:
                 instanceui_danbooru_post.LE_artist.setText(','.join(post_info.artists))
                 instanceui_danbooru_post.LE_cop.setText(','.join(post_info.copyright))
                 instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
-                instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.img_information))
+                instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.post_information))
         else:
                 # print('获取信息失败')
                 my_logger.info('获取信息失败')
@@ -33,9 +33,9 @@ def slot_btn_download_clicked():
         global post_info
 
         if post_info is not None:
-                img = post_info.original_img_url
+                media = post_info.original_post_url
                 # print('test: ' + img)
-                img_name = post_info.name
+                media_name = post_info.name
                 directory = 'downloads'
                 if not os.path.exists(directory):
                         os.makedirs(directory, exist_ok=True)
@@ -43,11 +43,11 @@ def slot_btn_download_clicked():
                 # print('正在启用下载，请稍后。。。。。')
                 my_logger.info('正在启用下载，请稍后。。。。。')
                 try:
-                        Downloader().download_file(img,os.path.join(directory,img_name) ,show_progress=False)
+                        Downloader().download_file(media,os.path.join(directory,media_name) ,show_progress=False)
                 except Exception as e:
                         # print('slot_btn_
                         # download_clicked error:', e)
                         my_logger.error(e)
                 else:
                         # print(img_name + '下载完毕')
-                        my_logger.info(img_name + '下载完毕')
+                        my_logger.info(media_name + '下载完毕')
