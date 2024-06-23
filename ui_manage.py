@@ -58,8 +58,7 @@ class MyUIManage(QMainWindow):
         self.danbooru_post_win = QMainWindow(self)
         instanceui_danbooru_post.setupUi(self.danbooru_post_win)
 
-        # my_logger.enable_qt_output(instanceui_danbooru_post.TE_log)
-        my_logger.enable_console_output()
+        my_logger.enable_qt_output(instanceui_main_window.TE_log)
 
         # danbooru gallery
         self.danbooru_gallery_win = QMainWindow(self)

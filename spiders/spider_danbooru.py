@@ -14,6 +14,7 @@ class GalleryInfo():
 class PostInfo():
     def __init__(self):
         self.name = ''
+        self.post_preview_src:str = ''
         self.original_post_url:str = ''
         self.parent_posts_url:str = ''
         self.artists = []
@@ -54,6 +55,7 @@ class Danbooru(MySpider):
         }
 
     _POST_RULES = {
+        'post_preview': Rule('#image.fit-width','src'),
         # 'original_post': Rule('li#post-option-view-original a.image-view-original-link','href'),# 最常见的帖子URL：缩小显示图片
         'original_download': Rule('li#post-option-download a','href'),
         'parent_posts_url' : Rule('div.notice a[rel="nofollow"]','href'),
@@ -102,6 +104,11 @@ class Danbooru(MySpider):
         data = self.crawler.extract_data(self.crawler.parse(html), Danbooru._POST_RULES)
         post_info = PostInfo()
 
+        if data['post_preview']:
+            post_pre_url = data['post_preview'][0]
+    
+        post_info.post_preview_src = post_pre_url
+
 
         if  data['original_download']:
             original_url = data['original_download'][0].split(r'?')[0]
@@ -114,7 +121,6 @@ class Danbooru(MySpider):
         try:
             parent_posts_url = Danbooru._ORIGIN +  data['parent_posts_url'][0]
         except :
-            # print('this post has no parent posts')
             parent_posts_url = None
         finally:
             post_info.parent_posts_url =  parent_posts_url

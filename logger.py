@@ -3,7 +3,7 @@ import logging,traceback
 from PyQt6.QtWidgets import QTextEdit
 
 class Logger:
-    def __init__(self,name:str = None, level=logging.DEBUG):
+    def __init__(self,name:str = None, level=logging.INFO):
         logger_name = name or __name__
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(level)

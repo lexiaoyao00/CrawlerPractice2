@@ -1,5 +1,9 @@
 import os
 
+import requests
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import Qt
+
 from UI import Ui_DanbooruPost
 from spiders import Danbooru,PostInfo,GalleryInfo
 from instance_manage import instance_danbooru,instanceui_danbooru_post,instanceui_danbooru_gallery
@@ -12,6 +16,20 @@ post_info:PostInfo = instanceInfo_danbooru_post_info
 gallery_info:GalleryInfo = instanceInfo_danbooru_gallery_info
 
 ###  Post UI  ###
+def scale_image(pixmap:QPixmap, max_size):
+        width = pixmap.width()
+        height = pixmap.height()
+
+        if width > max_size or height > max_size:
+            if width > height:
+                scaled_pixmap = pixmap.scaledToWidth(max_size)
+            else:
+                scaled_pixmap = pixmap.scaledToHeight(max_size)
+        else:
+            scaled_pixmap = pixmap
+
+        return scaled_pixmap
+
 def slot_danbooru_post_btn_getinfo_clicked():
     global post_info
     url = instanceui_danbooru_post.LE_url.text()
@@ -19,6 +37,11 @@ def slot_danbooru_post_btn_getinfo_clicked():
     try:
         post_info = instance_danbooru.post_parse(url)
         if post_info is not None:
+            pixmap = QPixmap()
+            pixmap.loadFromData(requests.get(post_info.post_preview_src).content)
+            scaled_pixmap = scale_image(pixmap,500)
+            instanceui_danbooru_post.label_img_preview.setPixmap(scaled_pixmap)
+
             instanceui_danbooru_post.LE_artist.setText(','.join(post_info.artists))
             instanceui_danbooru_post.LE_cop.setText(','.join(post_info.copyright))
             instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
@@ -60,12 +83,22 @@ def slot_danbooru_gallery_btn_firstPg_clicked():
         instanceui_danbooru_gallery.LE_page.setText('1')
 
 def slot_danbooru_gallery_btn_prevPg_clicked():
-        # TODO: 上一页
-        pass
+        current_page = int(instanceui_danbooru_gallery.LE_page.text())
+        current_page -= 1
+        
+        if current_page < 1:
+            current_page = 1
+        new_page = f'{current_page}'
+
+        instanceui_danbooru_gallery.LE_page.setText(new_page)
+
 
 def slot_danbooru_gallery_btn_nextPg_clicked():
-        # TODO: 下一页
-        pass
+        current_page = int(instanceui_danbooru_gallery.LE_page.text())
+        current_page += 1
+        new_page = f'{current_page}'
+
+        instanceui_danbooru_gallery.LE_page.setText(new_page)
 
 def slot_danbooru_gallery_btn_obtain_clicked():
     global gallery_info
