@@ -3,6 +3,7 @@ import os
 import requests
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt,QUrl
+from PyQt6.QtWebEngineCore import QWebEngineSettings
 
 from UI import Ui_DanbooruPost
 from spiders import Danbooru,PostInfo,GalleryInfo
@@ -16,6 +17,13 @@ post_info:PostInfo = instanceInfo_danbooru_post_info
 gallery_info:GalleryInfo = instanceInfo_danbooru_gallery_info
 
 ###  Post UI  ###
+def enable_video_play():
+
+    # settings = QWebEngineSettings.globalSettings()
+    settings = instanceui_danbooru_post.web_view.settings()
+
+    settings.setAttribute(QWebEngineSettings.WebAttribute.PluginsEnabled, True)
+    settings.setAttribute(QWebEngineSettings.WebAttribute.PlaybackRequiresUserGesture,False)
 
 def slot_danbooru_post_btn_getinfo_clicked():
     global post_info

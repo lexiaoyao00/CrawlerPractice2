@@ -2,10 +2,15 @@ import sys
 
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout,QMainWindow,QSizePolicy
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt,QObject, pyqtSignal
+
 import requests
 
 from UI.Ui_danbooru_gallery_fixed import Ui_DanbooruGalleryFixed
+
+class Communicate(QObject):
+    # 创建信号
+    turn_to_post = pyqtSignal(str)
 
 class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
     # def __init__(self):
@@ -26,6 +31,8 @@ class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
         self.verticalLayout.addWidget(self.image_widget)
 
         self.image_labels = []  # 用于存储所有 QLabel 对象
+
+        self.communicate = Communicate() # 创建信号
 
     def show_images(self, prev_image_urls,post_urls):
         if prev_image_urls is None or len(prev_image_urls) == 0:
@@ -72,4 +79,5 @@ class Ui_DanbooruGallery(Ui_DanbooruGalleryFixed):
 
     def on_image_clicked(self, event, url):
         # TODO：跳转帖子解析界面
-        print(f"Image clicked: {url}")
+        # print(f"Image clicked: {url}")
+        self.communicate.turn_to_post.emit(url)

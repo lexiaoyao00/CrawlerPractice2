@@ -50,6 +50,7 @@ class MyUIManage(QMainWindow):
         instanceui_danbooru_gallery.PB_nextPg.clicked.connect(lambda : self._slot_danbooru_gallery_btn_clicked('nextPg'))
         instanceui_danbooru_gallery.PB_lastPg.clicked.connect(lambda : self._slot_danbooru_gallery_btn_clicked('lastPg'))
 
+        instanceui_danbooru_gallery.communicate.turn_to_post.connect(lambda url: self._slot_turn_to_post(url))
 
 
 
@@ -59,6 +60,8 @@ class MyUIManage(QMainWindow):
         instanceui_danbooru_post.setupUi(self.danbooru_post_win)
 
         my_logger.enable_qt_output(instanceui_main_window.TE_log)
+        # TODO:使能播放视频
+        danbooru_ui.enable_video_play()
 
         # danbooru gallery
         self.danbooru_gallery_win = QMainWindow(self)
@@ -91,6 +94,12 @@ class MyUIManage(QMainWindow):
 
 
 ################################ gallery slots
+    def _slot_turn_to_post(self,url:str):
+        instanceui_danbooru_post.LE_url.setText(url)
+        instanceui_danbooru_post.PB_getInfo.click()
+        self.show_danbooru_post()
+        self.danbooru_post_win.raise_()
+
     def _slot_danbooru_gallery_update_url(self):
         danbooru_ui.slot_danbooru_gallery_update_url()
 
