@@ -101,7 +101,6 @@ class Crawler:
             if elements:
                 if rule.content == 'html':# 直接获取节点内容
                     data[key] = [str(element) for element in elements]
-                    return data
 
                 elif rule.content == 'text':# 获取节点文本或属性
                     if rule.attribute:# 是否获取属性
