@@ -30,3 +30,6 @@ danbooru:
     - "Watermark"
     - "Web address"
     - "Weapon name"
+    - commentary
+    - "second-party source"
+    - "paid reward available"
