@@ -2,10 +2,10 @@
 from random import choice
 from bs4 import BeautifulSoup
 from typing import List,Dict
-from tenacity import retry, stop_after_attempt, wait_exponential
 from curl_cffi import requests
 
 from logger import my_logger
+from .decorators import retry
 
 
 USER_AGENTS = [
@@ -53,18 +53,7 @@ class Crawler:
         proxy = choice(self.proxies) if self.proxies else None
         return {'http': proxy, 'https': proxy}
 
-    # @retry(stop=stop_after_attempt(max_retries), wait=wait_exponential(multiplier=retry_backoff))
-    # def send_request(self, url, method='GET', data=None, headers=None, proxies=None):
-    #     headers = headers or self.get_headers()
-    #     proxies = proxies or self.get_proxy()
-    #     try:
-    #         response = requests.request(method, url, headers=headers, data=data, proxies=proxies, timeout=10)
-    #         response.raise_for_status()
-    #         return response.text
-    #     except requests.exceptions.RequestException as e:
-    #         print(f'Error: {e}')
-    #         raise e
-    @retry(stop=stop_after_attempt(max_retries), wait=wait_exponential(multiplier=retry_backoff))
+    @retry()
     def send_request(self, url, method='GET', params=None, data=None,cookies=None, headers=None, proxies=None):
         headers = headers or self.get_headers(url)
         proxies = proxies or self.get_proxy()
