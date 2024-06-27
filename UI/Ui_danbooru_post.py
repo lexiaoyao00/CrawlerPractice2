@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_DanbooruPost(object):
     def setupUi(self, DanbooruPost):
         DanbooruPost.setObjectName("DanbooruPost")
-        DanbooruPost.resize(703, 747)
+        DanbooruPost.resize(779, 754)
         self.centralwidget = QtWidgets.QWidget(parent=DanbooruPost)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -74,9 +74,13 @@ class Ui_DanbooruPost(object):
         self.web_view.setMinimumSize(QtCore.QSize(0, 300))
         self.web_view.setObjectName("web_view")
         self.verticalLayout.addWidget(self.web_view)
+        self.progressBar_download = QtWidgets.QProgressBar(parent=self.centralwidget)
+        self.progressBar_download.setProperty("value", 0)
+        self.progressBar_download.setObjectName("progressBar_download")
+        self.verticalLayout.addWidget(self.progressBar_download)
         DanbooruPost.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=DanbooruPost)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 703, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 779, 22))
         self.menubar.setObjectName("menubar")
         DanbooruPost.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=DanbooruPost)

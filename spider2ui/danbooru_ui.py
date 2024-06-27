@@ -55,7 +55,7 @@ def slot_danbooru_post_btn_download_clicked():
 
         my_logger.info('正在启用下载，请稍后。。。。。')
         try:
-                Downloader().download_file(media,os.path.join(directory,media_name) ,show_progress=False)
+                Downloader().download_file(media,os.path.join(directory,media_name),progress_bar=instanceui_danbooru_post.progressBar_download,show_console_progress=False)
         except Exception as e:
                 my_logger.error(e)
         else:
