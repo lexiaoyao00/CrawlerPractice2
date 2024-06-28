@@ -33,9 +33,6 @@ class Rule:
         self.content = content
 
 class Crawler:
-    max_retries = 3 #最大重试次数 
-    retry_backoff = 2 #重试间隔的指数增长因子
-
     def __init__(self, user_agents=None, proxies=None):
         self.user_agents = user_agents or []
         self.proxies = proxies or []
@@ -101,28 +98,4 @@ class Crawler:
             else:
                 data[key] = []
         return data
-
-# 使用示例
-# if __name__ == "__main__":
-
-#     crawler = Crawler(user_agents=USER_AGENTS,proxies = PROXIES)
-#     url = 'https://www.baidu.com/'
-#     html = crawler.send_request(url)
-#     soup = crawler.parse(html)
-
-#     # rules = {
-#     #     'title': 'h1',
-#     #     'news': 'span[class="title-content-title"]',
-#     # }
-
-#     # rules = {
-#     #     'title': {'selector': 'h1'},
-#     #     'news' : {'selector': 'span[class="title-content-title"]'},
-#     # }
-
-#     rules = {
-#             'links': Rule('a.mnav','href'),
-#         }
-
-#     data = crawler.extract_data(soup, rules)
-#     print(data)
+            
