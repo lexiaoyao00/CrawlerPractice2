@@ -3,7 +3,7 @@ import requests
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 # from curl_cffi import requests
-from PyQt6.QtWidgets import QProgressBar
+from PyQt5.QtWidgets import QProgressBar
 
 from logger import my_logger
 class Downloader:

@@ -1,6 +1,6 @@
 import sys
-from PyQt6.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog,QDateEdit
-from PyQt6.QtCore import Qt,QDate
+from PyQt5.QtWidgets import QMainWindow,QApplication,QWidget,QMessageBox,QDialog,QDateEdit
+from PyQt5.QtCore import Qt,QDate
 
 from spider2ui import danbooru_ui
 from instance_manage import instanceui_danbooru_post,instanceui_main_window,instanceui_danbooru_gallery

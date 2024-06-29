@@ -1,9 +1,9 @@
 import os
 
 import requests
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt,QUrl
-from PyQt6.QtWebEngineCore import QWebEngineSettings
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt,QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineSettings
 
 from UI import Ui_DanbooruPost
 from spiders import Danbooru,PostInfo,GalleryInfo

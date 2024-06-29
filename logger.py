@@ -1,6 +1,6 @@
 import logging,traceback
 
-from PyQt6.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QTextEdit
 
 class Logger:
     def __init__(self,name:str = None, level=logging.INFO):

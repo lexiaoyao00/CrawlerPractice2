@@ -1,8 +1,8 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout,QMainWindow,QSizePolicy
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt,QObject, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QGridLayout,QMainWindow,QSizePolicy
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt,QObject, pyqtSignal
 
 import requests
 

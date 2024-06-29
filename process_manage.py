@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 
-from instance_manage import my_logger
+from logger import my_logger
 
 class ProcessManager(object):
     _instance = None

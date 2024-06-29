@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>779</width>
-    <height>754</height>
+    <width>660</width>
+    <height>651</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -141,7 +141,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>779</width>
+     <width>660</width>
      <height>22</height>
     </rect>
    </property>
@@ -152,7 +152,7 @@
   <customwidget>
    <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header location="global">PyQt6.QtWebEngineWidgets</header>
+   <header location="global">PyQt5.QtWebEngineWidgets </header>
    <container>1</container>
   </customwidget>
  </customwidgets>
