@@ -10,7 +10,7 @@ from spiders import Danbooru,PostInfo,GalleryInfo
 from instance_manage import instance_danbooru,instanceui_danbooru_post,instanceui_danbooru_gallery
 from instance_manage import instanceInfo_danbooru_post_info,instanceInfo_danbooru_gallery_info
 from common import Downloader
-from logger import my_logger
+from logger import main_logger
 
 
 post_info:PostInfo = instanceInfo_danbooru_post_info
@@ -39,9 +39,9 @@ def slot_danbooru_post_btn_getinfo_clicked():
             instanceui_danbooru_post.TE_tags.setText(','.join(post_info.tags))
             instanceui_danbooru_post.TE_Info.setText('\n'.join(post_info.post_information))
         else:
-            my_logger.info('获取信息失败')
+            main_logger.info('获取信息失败')
     except Exception as e:
-        my_logger.error(e)
+        main_logger.error(e)
 
 def slot_danbooru_post_btn_download_clicked():
     global post_info
@@ -53,13 +53,13 @@ def slot_danbooru_post_btn_download_clicked():
         if not os.path.exists(directory):
                 os.makedirs(directory, exist_ok=True)
 
-        my_logger.info('正在启用下载，请稍后。。。。。')
+        main_logger.info('正在启用下载，请稍后。。。。。')
         try:
                 Downloader().download_file(media,os.path.join(directory,media_name),progress_bar=instanceui_danbooru_post.progressBar_download,show_console_progress=False)
         except Exception as e:
-                my_logger.error(e)
+                main_logger.error(e)
         else:
-                my_logger.info(media_name + '下载完毕')
+                main_logger.info(media_name + '下载完毕')
 
 
 ###  Gallery UI  ###
@@ -101,7 +101,7 @@ def slot_danbooru_gallery_btn_obtain_clicked():
         # my_logger.debug(gallery_info.pre_imgs)
         instanceui_danbooru_gallery.show_images(gallery_info.pre_imgs,gallery_info.post_hrefs)
     except Exception as e:
-        my_logger.error(e)
+        main_logger.error(e)
 
 def slot_danbooru_gallery_radioBtn_hot_clicked():
     instanceui_danbooru_gallery.PB_lastPg.setEnabled(True)
@@ -145,4 +145,4 @@ def slot_danbooru_gallery_update_url():
         new_url = GalleryInfo._POPULAR + '?' + query_str
         instanceui_danbooru_gallery.LE_url.setText(new_url)
     else:
-        my_logger.error("画廊选项出错")
+        main_logger.error("画廊选项出错")

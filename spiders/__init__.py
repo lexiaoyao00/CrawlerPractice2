@@ -1,5 +1,6 @@
 from .spider_baidu import BaiDu
 from .spider_danbooru import Danbooru,PostInfo,GalleryInfo
+from .automation_sstm import SSTM_Auto
 
 ##### 动态导入1 #############
 

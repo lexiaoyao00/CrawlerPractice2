@@ -5,13 +5,18 @@ from PyQt5.QtCore import Qt,QDate
 from spider2ui import danbooru_ui
 from instance_manage import instanceui_danbooru_post,instanceui_main_window,instanceui_danbooru_gallery
 from instance_manage import instanceInfo_danbooru_gallery_info
-from logger import my_logger
+from logger import main_logger
 
 class MyUIManage(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        main_logger.enable_qt_output(instanceui_main_window.TE_log)
+
         self.init_ui()
+
+    def __del__(self):
+        main_logger.enable_qt_output(instanceui_main_window.TE_log,False)
 
 
     def init_ui(self):
@@ -59,7 +64,6 @@ class MyUIManage(QMainWindow):
         self.danbooru_post_win = QMainWindow(self)
         instanceui_danbooru_post.setupUi(self.danbooru_post_win)
 
-        my_logger.enable_qt_output(instanceui_main_window.TE_log)
         # TODO:使能播放视频
         danbooru_ui.enable_video_play()
 
@@ -121,7 +125,7 @@ class MyUIManage(QMainWindow):
 
 
         else:
-            my_logger.debug('按钮绑定错误')
+            main_logger.debug('按钮绑定错误')
             danbooru_ui.slot_danbooru_gallery_btn_firstPg_clicked()
 
     def _slot_danbooru_gallery_change_date_section(self):

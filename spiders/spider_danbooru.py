@@ -1,5 +1,5 @@
 from common import *
-from logger import my_logger
+from logger import main_logger
 
 
 class GalleryInfo():
@@ -40,7 +40,7 @@ class PostInfo():
             else:
                 ext = '.jpg'
             
-            my_logger.debug(name + ext)
+            main_logger.debug(name + ext)
 
             return name+ext
 
@@ -112,9 +112,9 @@ class Danbooru(MySpider):
 
         if  data['original_download']:
             original_url = data['original_download'][0].split(r'?')[0]
-            my_logger.debug('下载网址：' + original_url)
+            main_logger.debug('下载网址：' + original_url)
         else:
-            my_logger.error('下载链接未获取到，请检查'+post_url)
+            main_logger.error('下载链接未获取到，请检查'+post_url)
             original_url=None
         post_info.original_post_url = original_url
 
@@ -139,7 +139,7 @@ class Danbooru(MySpider):
         post_info.name = post_info.post_naming()
 
         # print('解析完毕:' + post_url)
-        my_logger.info('解析完毕:' + post_url)
+        main_logger.info('解析完毕:' + post_url)
         return post_info
 
     def gallery_parse(self,gallery_url:str):

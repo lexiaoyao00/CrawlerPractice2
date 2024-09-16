@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from typing import List,Dict
 from curl_cffi import requests
 
-from logger import my_logger
+from logger import main_logger
 from .decorators import retry
 
 
@@ -61,7 +61,7 @@ class Crawler:
         # except requests.exceptions.RequestException as e:
         except Exception as e:
             # print(f'Error: {e}')
-            my_logger.error(f'Error: {e}')
+            main_logger.error(f'Error: {e}')
             raise e
 
     def parse(self, html, parser='html.parser'):

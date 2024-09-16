@@ -14,3 +14,6 @@ instanceInfo_danbooru_gallery_info = GalleryInfo()
 ### Spiders ###
 instance_baidu = BaiDu()
 instance_danbooru = Danbooru()
+
+### automation ###
+instanceAuto_sstm = SSTM_Auto()

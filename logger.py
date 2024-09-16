@@ -99,4 +99,4 @@ class QtHandler(logging.Handler):
 
 
 
-my_logger = Logger("main")
+main_logger = Logger("main",logging.DEBUG)

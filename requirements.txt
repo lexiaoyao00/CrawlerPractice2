@@ -1,10 +1,8 @@
 beautifulsoup4==4.12.3
 curl_cffi==0.6.1
-curl_cffi==0.6.4
-PyQt6==6.7.0
-PyQt6_sip==13.6.0
-PyYAML==6.0.1
+playwright==1.42.0
+PyQt5==5.15.10
+PyQt5_sip==12.13.0
 PyYAML==6.0.1
 Requests==2.32.3
 tqdm==4.65.0
-tqdm==4.66.4

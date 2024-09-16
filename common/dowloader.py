@@ -5,7 +5,6 @@ from concurrent.futures import ThreadPoolExecutor
 # from curl_cffi import requests
 from PyQt5.QtWidgets import QProgressBar
 
-from logger import my_logger
 class Downloader:
     def __init__(self, threads=10):
         self.threads = threads

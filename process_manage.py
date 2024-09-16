@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 
-from logger import my_logger
+from logger import main_logger
 
 class ProcessManager(object):
     _instance = None
@@ -36,7 +36,7 @@ class ProcessManager(object):
             self.terminate_events[process].set()
         else:
             # print(f"Invalid process index: {process_index}")
-            my_logger.debug(f"Invalid process index: {process_index}")
+            main_logger.debug(f"Invalid process index: {process_index}")
 
     def terminate_processes(self):
         # self.terminate_event.set()
